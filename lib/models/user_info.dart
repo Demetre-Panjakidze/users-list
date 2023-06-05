@@ -13,5 +13,5 @@ class UserInfo {
   final String firstName;
   final String lastName;
   final int age;
-  final List<Proffesion> professions;
+  final Profession professions;
 }

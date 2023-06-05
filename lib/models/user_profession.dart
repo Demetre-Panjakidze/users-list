@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum Proffesions {
+enum Professions {
   doctor,
   engineer,
   teacher,
@@ -23,12 +23,12 @@ enum Proffesions {
   nurse,
 }
 
-class Proffesion {
-  const Proffesion(
-    this.proffesionName,
+class Profession {
+  const Profession(
+    this.professionName,
     this.color,
   );
 
-  final String proffesionName;
+  final String professionName;
   final Color color;
 }

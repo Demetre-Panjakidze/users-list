@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test/data/user_professions.dart';
 import 'package:test/models/user_info.dart';
 import 'package:test/models/user_profession.dart';
+import 'package:test/widgets/new_user.dart';
 
 class UsersList extends StatefulWidget {
   const UsersList({super.key});
@@ -12,37 +13,26 @@ class UsersList extends StatefulWidget {
 
 class _UsersListState extends State<UsersList> {
   String professionsList = '';
-  final List<UserInfo> _usersList = [
-    UserInfo(
-      id: DateTime.now().toString(),
-      firstName: 'Demetre',
-      lastName: 'Panjakidze',
-      age: 19,
-      professions: [
-        professions[Proffesions.programmer]!,
-        professions[Proffesions.engineer]!,
-        professions[Proffesions.musician]!,
-      ],
-    ),
-    UserInfo(
-      id: DateTime.now().toString(),
-      firstName: 'Elene',
-      lastName: 'Atcharadze',
-      age: 20,
-      professions: [
-        professions[Proffesions.programmer]!,
-        professions[Proffesions.engineer]!,
-        professions[Proffesions.designer]!,
-      ],
-    ),
-  ];
+  final List<UserInfo> _usersList = [];
 
-  Widget professionsCreator(List<Proffesion> list) {
-    professionsList = '';
-    for (final pr in list) {
-      professionsList += '${pr.proffesionName}, ';
+  // Widget professionsCreator(Profession list) {
+  //   return Text(professionsList.substring(0, professionsList.length - 2));
+  // }
+
+  void _addItem() async {
+    final newUser = await Navigator.of(context).push<UserInfo>(
+      MaterialPageRoute(
+        builder: (ctx) => const NewUser(),
+      ),
+    );
+
+    if (newUser == null) {
+      return;
     }
-    return Text(professionsList.substring(0, professionsList.length - 2));
+
+    setState(() {
+      _usersList.add(newUser);
+    });
   }
 
   void _removeItem(UserInfo user) {
@@ -84,11 +74,7 @@ class _UsersListState extends State<UsersList> {
               ),
               title: Text(
                   '${_usersList[index].firstName} ${_usersList[index].lastName} (${_usersList[index].age})'),
-              subtitle: Row(
-                children: [
-                  professionsCreator(_usersList[index].professions),
-                ],
-              ),
+              subtitle: Text(_usersList[index].professions.professionName),
             ),
           );
         },
@@ -99,7 +85,14 @@ class _UsersListState extends State<UsersList> {
       appBar: AppBar(
         leading: const Icon(Icons.supervised_user_circle),
         title: const Text('Users list'),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.add))],
+        actions: [
+          IconButton(
+            onPressed: () {
+              _addItem();
+            },
+            icon: const Icon(Icons.add),
+          )
+        ],
       ),
       body: content,
     );
